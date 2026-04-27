@@ -6,6 +6,10 @@
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-0.29%2B-green)
 ![Status](https://img.shields.io/badge/Status-Final_Project-orange)
 
+## 🎥 專案介紹影片 (Project Presentation)
+[![穿越極端市場的風險感知系統 - 提案解說](https://img.youtube.com/vi/JkD7_9YqPck/maxresdefault.jpg)](https://youtu.be/JkD7_9YqPck)
+> 點擊圖片觀看 10 分鐘完整 Proposal 解說（由 NotebookLM 生成音訊導讀）
+
 ## 👥 專案成員 (Team Members)
 * **張凱翔** (國立中興大學 資訊管理研究所)
 * **黃柏瑜** (國立中興大學 資訊管理研究所)
