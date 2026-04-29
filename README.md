@@ -18,6 +18,11 @@
 
 ---
 
+## 🔗 AI 輔助使用紀錄 (AI Assistance Records)
+* **notebookLM 使用紀錄**: [https://notebooklm.google.com/notebook/f930b356-4b3e-4121-a09b-61f862a273b1](https://notebooklm.google.com/notebook/f930b356-4b3e-4121-a09b-61f862a273b1)
+
+---
+
 ## 📌 專案簡介 (Project Overview)
 面對總經環境劇變與市場的高波動性（如 2026 年 3 月的極端市場壓力與 VIX 滯留警戒區間），傳統的靜態資產配置（如 60/40 股債配置）與落後的計量指標已無法有效應對非線性的 **Regime Shift（市場結構轉變）**，往往導致投資組合面臨毀滅性的最大回撤（Max Drawdown）。
 
