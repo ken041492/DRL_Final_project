@@ -1,0 +1,9 @@
+numpy
+pandas
+yfinance
+torch
+scikit-learn
+gymnasium
+PyYAML
+stable-baselines3
+matplotlib

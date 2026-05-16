@@ -1,0 +1,3 @@
+lookback: 30
+hidden_size: 128
+output_dim: 64
