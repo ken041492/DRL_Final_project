@@ -8,8 +8,7 @@ __pycache__/
 .env
 .venv/
 venv/
-env/
-ENV/
+
 
 # Jupyter Notebook
 .ipynb_checkpoints/
@@ -18,8 +17,19 @@ ENV/
 *.zip
 *.pth
 *.pt
+*.pkl
 evaluate_result.png
 
 # Data (Keep directory but ignore contents)
 data/*
 !data/.gitkeep
+
+# CSV files
+*.csv
+!macro_sentiment_2021_2026_final.csv
+*.txt
+
+# Training files
+*.zip
+*.pth
+*.pt

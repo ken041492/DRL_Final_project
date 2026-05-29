@@ -1,6 +1,7 @@
 import yaml
 import numpy as np
 import pandas as pd
+import joblib  # 新增 joblib 匯入
 import matplotlib.pyplot as plt
 from stable_baselines3 import PPO
 
@@ -8,7 +9,7 @@ from stable_baselines3 import PPO
 plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei']
 plt.rcParams['axes.unicode_minus'] = False
 
-from src.models.lstm_extractor import DataPreprocessor, fetch_and_engineer_tsmc_data
+from src.models.lstm_extractor import DataPreprocessor, fetch_and_engineer_data
 from src.env.trading_env import TradingEnv
 
 def main():
@@ -19,20 +20,35 @@ def main():
         
     lookback = config.get("lookback", 30)
     
-    START_DATE = "2025-05-15"
-    END_DATE = "2026-05-15"
+    settings = config.get("settings", {})
+    stock_id = settings.get("stock_id", "0050")
+    ticker = f"{stock_id}.TW"
+    # START_DATE = settings.get("start_date", "2025-01-27")
+    # END_DATE = settings.get("end_date", "2026-05-27")
+    START_DATE = "2025-05-25"
+    END_DATE = "2026-05-25"
+    
+    print(f"Loaded config: lookback={lookback}, ticker={ticker}, START_DATE={START_DATE}, END_DATE={END_DATE}")
     
     print("下載資料中...")
-    features_df, close_series = fetch_and_engineer_tsmc_data(START_DATE, END_DATE)
+    # features_df, close_series = fetch_and_engineer_data(START_DATE, END_DATE, ticker=ticker, sentiment_csv_path="macro_sentiment_2021_2026_final.csv")
+    features_df, close_series = fetch_and_engineer_data(START_DATE, END_DATE, ticker=ticker)
     
-    preprocessor = DataPreprocessor(scaler_type='standard', lookback=lookback)
-    scaled_features = preprocessor.fit_transform(features_df.values)
+    # 讀取訓練好的預處理器，避免資料洩漏 (Data Leakage)
+    print("載入預處理器 (Scaler)...")
+    preprocessor = joblib.load("ppo_macro_market_preprocessor.pkl")
+    
+    # 強制只能呼叫 preprocessor.transform 對測試集進行縮放，不能用 fit 或 fit_transform
+    scaled_features = preprocessor.transform(features_df.values)
+    
+    # 檢查測試集的特徵矩陣形狀，確認特徵維度(欄位數量)與訓練時一致
+    print(f"測試集特徵矩陣形狀: {scaled_features.shape}")
     
     print("初始化環境...")
     env = TradingEnv(df=scaled_features, close_prices=close_series, lookback=lookback)
     
     print("載入模型...")
-    model = PPO.load("ppo_tsmc_model")
+    model = PPO.load("ppo_macro_market_model")
     
     print("開始回測...")
     dates = []
@@ -91,7 +107,7 @@ def main():
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 10), sharex=True)
     
     # --- 上半部：真實收盤價走勢與買賣點 ---
-    ax1.plot(dates, prices, label="台積電收盤價", color="blue", alpha=0.6)
+    ax1.plot(dates, prices, label=f"{stock_id}收盤價", color="blue", alpha=0.6)
     
     # 篩選出買進與賣出的座標 (依據新的連續動作空間：> 0.01 為買進，< -0.01 為賣出)
     buy_dates = [dates[i] for i, a in enumerate(actions_list) if a > 0.01]
@@ -104,7 +120,7 @@ def main():
     ax1.scatter(buy_dates, buy_prices, marker="^", color="red", label="買進 (Action > 0)", s=100, zorder=5)
     ax1.scatter(sell_dates, sell_prices, marker="v", color="green", label="賣出 (Action < 0)", s=100, zorder=5)
     
-    ax1.set_title("台積電 (2330.TW) 收盤價與 AI 交易標示", fontsize=16)
+    ax1.set_title(f"{stock_id} 收盤價與 AI 交易標示", fontsize=16)
     ax1.set_ylabel("價格 (TWD)", fontsize=12)
     ax1.legend(loc="upper left")
     ax1.grid(True, alpha=0.3)

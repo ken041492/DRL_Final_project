@@ -65,6 +65,22 @@ $$R_t = \text{Sharpe}_t - \alpha \times \text{Drawdown Penalty}_t$$
 
 ---
 
+## 🚀 快速開始 (Quick Start)
+
+想要一鍵重現實驗結果，並觀察「新聞情緒分數」對 Agent 績效與交易動作的影響嗎？
+請直接執行自動化實驗腳本：
+
+```bash
+python run_experiment.py
+```
+
+執行後請耐心等待，腳本會自動進行：
+1. 分別使用「有加入新聞分數」與「無加入新聞分數」的特徵訓練 PPO 模型（各跑 50,000 步）。
+2. 對樣本外測試集進行回測驗證。
+3. 訓練與驗證完成後，會自動產生名為 `compare_sentiment_result_<股票代號>.png` 的對比圖表，直接顯示 AI 的買賣點與最終淨值比較。
+
+---
+
 ## 📂 專案架構 (Repository Structure)
 *(註：以下為預設架構)*
 ```text
