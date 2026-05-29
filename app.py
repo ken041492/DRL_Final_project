@@ -2,7 +2,10 @@ import os
 import time
 import yaml
 import pandas as pd
+from dotenv import load_dotenv
 from FinMind.data import DataLoader
+
+load_dotenv()
 
 # ─── 📦 讀取 config.yaml 設定檔 ───
 with open("configs/config.yaml", "r", encoding="utf-8") as f:
@@ -14,11 +17,11 @@ STOCK_ID = config["settings"]["stock_id"]
 START_DATE = config["settings"]["start_date"]
 END_DATE = config["settings"]["end_date"]
 
-# 動態從 Token 清單中抓取當前用戶的 Token
-TOKEN = config["finmind_tokens"].get(CURRENT_USER)
+# 動態從 .env 中抓取當前用戶的 Token
+TOKEN = os.getenv(f"FINMIND_TOKEN_{CURRENT_USER.upper()}")
 
 if not TOKEN:
-    raise ValueError(f"❌ 在 config.yaml 的 finmind_tokens 中找不到用戶 [{CURRENT_USER}] 的 Token！")
+    raise ValueError(f"❌ 在 .env 中找不到用戶 [{CURRENT_USER}] 的 Token (FINMIND_TOKEN_{CURRENT_USER.upper()})！")
 
 print(f"🔑 成功讀取設定！當前用戶: [{CURRENT_USER}]，準備撈取標的: {STOCK_ID}")
 

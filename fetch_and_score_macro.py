@@ -4,8 +4,11 @@ import os
 import requests
 import json
 import pandas as pd
+from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from FinMind.data import DataLoader
+
+load_dotenv()
 from tqdm import tqdm
 
 # 初始化 tqdm 以便與 pandas 搭配使用
@@ -66,10 +69,10 @@ def main():
     START_DATE = config.get('settings', {}).get('start_date', '2020-01-01')
     END_DATE = config.get('settings', {}).get('end_date', '2026-05-26')
     
-    token = config.get('finmind_tokens', {}).get(CURRENT_USER, "")
+    token = os.getenv(f"FINMIND_TOKEN_{CURRENT_USER.upper()}")
     
     if not token:
-        print(f"找不到使用者 {CURRENT_USER} 的 Token，請確認 configs/config.yaml 設定。")
+        print(f"找不到使用者 {CURRENT_USER} 的 Token，請確認 .env 設定 (FINMIND_TOKEN_{CURRENT_USER.upper()})。")
         return
         
     print(f"初始化 FinMind DataLoader (User: {CURRENT_USER}, Stock: {STOCK_ID})")

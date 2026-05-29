@@ -1,15 +1,12 @@
 lookback: 30
 hidden_size: 128
 output_dim: 64
-
-finmind_tokens:
-  andy041492: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoia2VuMDQxNDkyIiwiZW1haWwiOiJhbmR5MDQxNDkyQGdtYWlsLmNvbSIsInRva2VuX3ZlcnNpb24iOjB9.n1vtlxQBm1wtb_M-T33kTkQcGksd7gtfzWk9TuyQXrs"
-  ken041492: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoia2VuMDQxNDkyIiwiZW1haWwiOiJhbmR5MDQxNDkyQGdtYWlsLmNvbSIsInRva2VuX3ZlcnNpb24iOjB9.n1vtlxQBm1wtb_M-T33kTkQcGksd7gtfzWk9TuyQXrs"
-  nchu: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoibmNodSIsImVtYWlsIjoiYW5keTA0MTQ5MkBzbWFpbC5uY2h1LmVkdS50dyIsInRva2VuX3ZlcnNpb24iOjB9.f8annu5a0WsxRqQ6Q9HEkqAkIB2roBwUiZYFFn9vASE"
+# Token 已移至 .env 檔案管理，請透過 python-dotenv 讀取
+# 若要新增 Token，請在 .env 中加入 FINMIND_TOKEN_<USER>="你的 token"
 
 # 爬蟲與資料集設定 (之後有其他設定也可以直接加在這)
 settings:
   current_user: "andy041492"       # 👈 未來要換帳號，直接在 YAML 改這個字串就好！
-  stock_id: "6770"
+  stock_id: "3231"
   start_date: "2021-01-01"
   end_date: "2024-12-31"
