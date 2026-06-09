@@ -21,12 +21,10 @@ venv/
 evaluate_result.png
 
 # Data (Keep directory but ignore contents)
-data/*
 !data/.gitkeep
 
 # CSV files
-*.csv
-!macro_sentiment_2021_2026_final.csv
+!data/*
 *.txt
 
 # Training files

@@ -41,6 +41,17 @@
    * 負責連續動作空間的部位權重分配（Action Space: -1 到 1）。
    * 取代單純預測模型，PPO 直接與環境互動並規避滑價（Slippage）與手續費損耗。
 
+### 🎲 馬可夫決策過程 (MDP) 定義
+* **狀態空間 (State, $S_t$)**：連續狀態空間，包含過去 `lookback` 天的 OHLCV、技術指標與總經/新聞情緒分數（Shape: `(lookback, num_features)`）。
+* **動作空間 (Action, $A_t$)**：連續動作空間 $A_t \in [-1.0, 1.0]$。
+  * $A_t > 0.3$：強烈看多（滿倉買進 / 保持滿倉）
+  * $A_t < -0.3$：強烈看空（清倉賣出 / 保持空手）
+  * $-0.3 \le A_t \le 0.3$：維持現狀（並設有 $|A_t| < 0.15$ 的交易死區避免微小震盪導致頻繁交易）。
+* **獎勵函數 (Reward, $R_t$)**：採用業界標準的部位報酬法，並引入交易摩擦懲罰：
+  * 若有持倉：$R_t = \text{Asset Return} \times 100$
+  * 若為空倉：$R_t = 0$
+  * 發生交易時，額外扣除手續費與滑價成本（Fee Rate = 0.2%）。
+
 ### 🛡️ 風險感知獎勵函數 (Risk-Aware Reward Function)
 為符合實務法人機構對下行風險的嚴格控管，我們設計了帶有最大回撤懲罰的獎勵機制：
 $$R_t = \text{Sharpe}_t - \alpha \times \text{Drawdown Penalty}_t$$
@@ -68,6 +79,15 @@ $$R_t = \text{Sharpe}_t - \alpha \times \text{Drawdown Penalty}_t$$
 
 ---
 
+## 📰 關於新聞情緒分數 (About News Sentiment Data)
+
+專案中的新聞情緒分數資料已經透過 [`scripts/fetch_and_score_macro.py`](scripts/fetch_and_score_macro.py) 處理完畢並預先提供於 `data/` 目錄中（目前主要抓取 **0050 台灣50** 相關之總經與大盤新聞）。
+
+> [!NOTE]
+> 這些資料已經可以直接用於模型訓練與回測。如果你想要自行抓取其他資訊或其他股票標的的新聞，你需要先在 `.env` 檔案中補上你專屬的 `FINMIND_TOKEN_<CURRENT_USER>` 環境變數，才能夠順利運行該爬蟲腳本。
+
+---
+
 ## 🚀 快速開始 (Quick Start)
 
 想要一鍵重現實驗結果，並觀察「新聞情緒分數」對 Agent 績效與交易動作的影響嗎？
@@ -85,13 +105,17 @@ python run_experiment.py
 ---
 
 ## 📂 專案架構 (Repository Structure)
-*(註：以下為預設架構)*
 ```text
-├── data/                  # 歷史 OHLCV 與總經指標數據
-├── envs/                  # 自定義 Gymnasium 交易環境 (包含手續費與滑價邏輯)
-├── models/                # LSTM 特徵提取器與 PPO 網路架構
-├── notebooks/             # 數據探索 (EDA) 與回測視覺化 Jupyter Notebooks
-├── train.py               # 模型訓練腳本
-├── evaluate.py            # 樣本外壓力測試與績效計算腳本
-├── requirements.txt       # 環境依賴套件
+├── data/                  # 歷史 OHLCV、總經指標數據與新聞情緒分數 (.csv, .txt)
+├── models/                # 訓練完成的模型權重 (.zip) 與特徵預處理器 (.pkl)
+├── notebooks/             # 數據探索 (EDA) 與回測視覺化 Jupyter Notebooks (.ipynb)
+├── results/               # 測試與驗證之輸出結果圖表 (.png)
+├── scripts/               # 資料獲取、情緒分析、模型訓練與單獨驗證等相關腳本
+├── src/                   # 核心模組
+│   ├── env/               # 自定義 Gymnasium 交易環境 (trading_env.py)
+│   └── models/            # LSTM 特徵提取器與 PPO 網路架構
+├── requirements.txt       # 環境依賴套件清單
+├── run_experiment.py      # 一鍵自動化實驗腳本 (主要執行入口)
+├── *.pdf / *.pptx / *.md  # 期末專案簡報、提案書與對話紀錄 (保留於根目錄方便檢閱)
 └── README.md              # 專案說明文件
+```

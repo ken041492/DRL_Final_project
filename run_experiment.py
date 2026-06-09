@@ -29,10 +29,10 @@ def run_training_and_eval(use_sentiment, config):
     TEST_START = "2025-01-01"
     TEST_END = "2026-05-26"
     
-    sentiment_path = "macro_sentiment_2021_2026_final.csv" if use_sentiment else None
+    sentiment_path = "data/macro_sentiment_2021_2026_final.csv" if use_sentiment else None
     tag = "有新聞分數" if use_sentiment else "無新聞分數"
-    model_name = "ppo_with_sentiment_model" if use_sentiment else "ppo_without_sentiment_model"
-    preprocessor_name = "preprocessor_with_sentiment.pkl" if use_sentiment else "preprocessor_without_sentiment.pkl"
+    model_name = "models/ppo_with_sentiment_model" if use_sentiment else "models/ppo_without_sentiment_model"
+    preprocessor_name = "models/preprocessor_with_sentiment.pkl" if use_sentiment else "models/preprocessor_without_sentiment.pkl"
     
     print(f"\n{'='*50}")
     print(f"開始執行實驗: {tag}")
