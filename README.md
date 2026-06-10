@@ -10,6 +10,9 @@
 [![穿越極端市場的風險感知系統 - 提案解說](https://img.youtube.com/vi/JkD7_9YqPck/maxresdefault.jpg)](https://youtu.be/JkD7_9YqPck)
 > 點擊圖片觀看 10 分鐘完整 Proposal 解說（由 NotebookLM 生成音訊導讀）
 
+[![穿越極端市場的風險感知系統 - 展示影片](https://img.youtube.com/vi/81euQ3wCvnk/maxresdefault.jpg)](https://youtu.be/81euQ3wCvnk)
+> 點擊圖片觀看展示影片
+
 ## 👥 專案成員 (Team Members)
 * **張凱翔** (國立中興大學 資訊管理研究所)
 * **黃柏瑜** (國立中興大學 資訊管理研究所)
